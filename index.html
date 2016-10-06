@@ -23,8 +23,10 @@
       xhr.setRequestHeader("content-type", "application/json");
       xhr.send(data);
       
-      obj = JSON.parse(xhr);
-      document.getElementById("searchResult").innerHTML = obj.searchResponse.result.hitCount.$;
+      console.log(xhr);
+      
+      var obj = JSON.parse(xhr);
+      document.getElementById("searchResult").innerHTML = obj.searchResponse.result.searchResult[0].collection.object[0].record.title[0].$;
       
     </script>
   </body>
