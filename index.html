@@ -6,7 +6,29 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
   </head>
   <body>
-    <title>Opensearch</title>
-    <p>Indhold</p>
+   <p id="searchResult"></p>
+    <script>
+      var opensearchRequest = function(){var data = null;
+
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        console.log(this.responseText);
+      }
+      });
+
+      xhr.open("GET", "http://oss-services.dbc.dk/opensearch/?action=search&query=%22harry%20potter%22&agency=100200&profile=test&start=1&stepValue=5&outputType=json");
+      xhr.setRequestHeader("cache-control", "no-cache");
+      xhr.setRequestHeader("postman-token", "722888bf-1c6a-b09f-073b-a2c525c571fb");
+
+      xhr.send(data);
+      }
+
+      obj = JSON.parse(opensearchRequest);
+      document.getElementById("searchResult").innerHTML =
+      obj.searchResponse.result.searchResult.collection[0].object[0].record.title.$;
+    </script>
   </body>
 </html>
