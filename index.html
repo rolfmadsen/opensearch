@@ -21,8 +21,8 @@
       xhr.setRequestHeader("content-type", "application/json");
       xhr.send(data);
       
-      var obj = JSON.parse(xhr);
-      document.getElementById("searchResult").innerHTML = obj.searchResponse.result.searchResult[0].collection.object[0].record.title[0].$;
+      /*var obj = JSON.parse(xhr);*/
+      document.getElementById("searchResult").innerHTML = xhr.searchResponse.result.searchResult[0].collection.object[0].record.title[0].$;
     
     </script>
   </body>
