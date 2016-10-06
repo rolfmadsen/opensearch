@@ -26,7 +26,12 @@
       /*xhr.setRequestHeader("cache-control", "no-cache");*/
       xhr.setRequestHeader("content-type", "application/json");
 
-      xhr.send(data);
+      xhr.send(data);}
+      
+      obj = JSON.parse(xhr);
+      document.getElementById("searchResult").innerHTML =
+      obj.searchResponse.result.searchResult.collection[0].object[0].record.title;
+      
     </script>
   </body>
 </html>
