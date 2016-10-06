@@ -24,6 +24,7 @@
       
       xhr.open("GET", "https://crossorigin.me/http://oss-services.dbc.dk/opensearch/4.3/?action=search&query=%22danmark%22&agency=100200&profile=test&start=1&stepValue=5&outputType=json");
       /*xhr.setRequestHeader("cache-control", "no-cache");*/
+      xhr.setRequestHeader("content-type", "application/json");
 
       xhr.send(data);
     </script>
