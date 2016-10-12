@@ -1,29 +1,57 @@
-<!DOCTYPE html>
-<html lang="en-us">
+<html>
   <head>
     <meta charset="UTF-8">
     <title>Opensearch by rolfmadsen</title>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
   </head>
   <body>
-
-    <p id="searchResult">test</p>
+    <input type="text" id="searchField"> 
+    <button onclick="search()">Søg</button><br/>
+    <p>Søgeresultats første resultats titel:</p>
+      <span id="searchresult"></span>
     
     <script>
-      var data = null;
-      var xhr = new XMLHttpRequest();
-      xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === 4) {
-          console.log(this.responseText);
-        }
+      function apiQuery(url, callback) {
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            console.log('responseText:' + xmlhttp.responseText);
+            try {
+              var data = JSON.parse(xmlhttp.responseText);
+            } catch(err) {
+              console.log(err.message + " in " + xmlhttp.responseText);
+              return;
+            }
+            callback(data);
+          }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+      }
+
+     	function search() {
+        var query = document.getElementById("searchField").value;
+        apiQuery("https://crossorigin.me/http://oss-			services.dbc.dk/opensearch/4.3/?action=search&query=" + query + "&agency=100200&profile=test&start=1&stepValue=5&outputType=json", function(data) {
+
+        var title = data.searchResponse.result.searchResult[0].collection.object[0].record.title[0].$;        
+       
+        var creator =   data.searchResponse.result.searchResult[0].collection.object[0].record.creator[0].$;
+
+        var date =  data.searchResponse.result.searchResult[0].collection.object[0].record.date[0].$;
+          
+        var response = title + creator + date;
+
+        document.getElementById("searchresult").innerHTML = response; 
+
+        /*var html = data["title"] + "</h2>";
+          html += "<h3>" + data["description"] + "</h3>";
+          html += "<ul>";
+             for (var i=0; i < data["articles"].length; i++) {
+                 html += '<li><a href="' + data["articles"][i]["url"] + '">' + data["articles"][i]["title"] + "</a></li>";
+             }
+          html += "</ul>";
+        document.getElementById("demo").innerHTML = html;*/
       });
-      xhr.open("GET", "https://crossorigin.me/http://oss-services.dbc.dk/opensearch/4.3/?action=search&query=%22danmark%22&agency=100200&profile=test&start=1&stepValue=5&outputType=json");
-      xhr.setRequestHeader("content-type", "application/json");
-      xhr.send(data);
-      
-      /*var obj = JSON.parse(xhr);*/
-      document.getElementById("searchResult").innerHTML = xhr.searchResponse.result.searchResult[0].collection.object[0].record.title[0].$;
-    
+                                };
     </script>
   </body>
 </html>
