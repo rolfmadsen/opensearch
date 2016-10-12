@@ -30,13 +30,13 @@
 
      	function search() {
         var query = document.getElementById("searchField").value;
-        apiQuery("https://crossorigin.me/http://oss-			services.dbc.dk/opensearch/4.3/?action=search&query=" + query + "&agency=100200&profile=test&start=1&stepValue=5&outputType=json", function(data) {
+        apiQuery("https://crossorigin.me/http://oss-services.dbc.dk/opensearch/4.3/?action=search&query=" + query + "&agency=100200&profile=test&start=1&stepValue=5&outputType=json", function(data) {
 
         var title = data.searchResponse.result.searchResult[0].collection.object[0].record.title[0].$;        
        
-        var creator =   data.searchResponse.result.searchResult[0].collection.object[0].record.creator[0].$;
+        var creator = data.searchResponse.result.searchResult[0].collection.object[0].record.creator[0].$;
 
-        var date =  data.searchResponse.result.searchResult[0].collection.object[0].record.date[0].$;
+        var date = data.searchResponse.result.searchResult[0].collection.object[0].record.date[0].$;
           
         var response = title + creator + date;
 
