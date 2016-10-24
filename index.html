@@ -4,12 +4,34 @@
     <title>Opensearch by rolfmadsen</title>
   </head>
   <body>
-    <input type="text" id="searchField"> 
-    <button onclick="search()">Søg</button><br/>
-    <p>Søgeresultats første resultats titel:</p>
-      <span id="searchresult"></span>
+    <!-- 
+      - Form elementet gør at search() funktionen kan aktiveres ved at trykke på return i stedet for at aktivere Søg-knappen med musens cursor.
+      - Input-feltet med id searchField gør at værdien af feltet kan trækkes ud.
+      - Button elementet aktiverer formens action og initierer javascript:search();
+    -->
+    <form action="javascript:search();">
+      <input type="text" id="searchField">
+      <button type="submit">Søg</button>
+    </form>
+
+    <!--
+      - P-elementet med id searchresult gør at elementet kan tilføjes en værdi fra scriptet.
+    -->
     
+    <p id="searchresult"></p>
+    
+
+ 
     <script>
+      
+    /*
+      - Funktionen apiQuery er en callback function der initieres med:
+        a: en URL til et API endpoint 
+        b: en funktion til at behandle response fra web servicen.
+      
+        Callback funktionen er helt ren og kan benyttes til API'er.
+    */
+      
       function apiQuery(url, callback) {
         xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -28,30 +50,30 @@
         xmlhttp.send();
       }
 
-     	function search() {
-        var query = document.getElementById("searchField").value;
-        apiQuery("https://crossorigin.me/http://oss-services.dbc.dk/opensearch/4.3/?action=search&query=" + query + "&agency=100200&profile=test&start=1&stepValue=5&outputType=json", function(data) {
-
-        var title = data.searchResponse.result.searchResult[0].collection.object[0].record.title[0].$;        
-       
-        var creator = data.searchResponse.result.searchResult[0].collection.object[0].record.creator[0].$;
-
-        var date = data.searchResponse.result.searchResult[0].collection.object[0].record.date[0].$;
-          
-        var response = title + creator + date;
-
-        document.getElementById("searchresult").innerHTML = response; 
-
-        /*var html = data["title"] + "</h2>";
-          html += "<h3>" + data["description"] + "</h3>";
-          html += "<ul>";
-             for (var i=0; i < data["articles"].length; i++) {
-                 html += '<li><a href="' + data["articles"][i]["url"] + '">' + data["articles"][i]["title"] + "</a></li>";
-             }
-          html += "</ul>";
-        document.getElementById("demo").innerHTML = html;*/
-      });
-                                };
+/*
+      - search funktionen initierer apiQuery funktionen med:
+        a: API endpoint URL'en samt 
+        b: function(data), der tager varablen data fra apiQuery kaldets responseText og gør det muligt at tilgå data via data.searchResponse.result [...]
+      
+      - response variablen samler det visformat der skal vises i brugergrænsefladen.
+      
+      - document.getElementById indsætter via innerHTML værdien af response variablen i P-elementet med id'et searchresult.
+*/
+      
+function search() {
+  var query = document.getElementById("searchField").value;
+  
+  apiQuery("https://crossorigin.me/http://oss-services.dbc.dk/opensearch/4.3/?action=search&query=" + "%22" + query + "%22" + "&agency=100200&profile=test&start=1&stepValue=5&outputType=json", function(data) {
+    var hitCount = data.searchResponse.result.hitCount.$;
+    var title = data.searchResponse.result.searchResult[0].collection.object[0].record.title[0].$;
+    var creator = data.searchResponse.result.searchResult[0].collection.object[0].record.creator[0].$;
+    var date = data.searchResponse.result.searchResult[0].collection.object[0].record.date[0].$;
+    var response = "<p>" + "Antal resultater: " + hitCount + "</p>" + "<p>" + title + " (" + date + ")" + "</br>" + "<span>" + "By: " + creator + "</span>" + "</p>";
+    
+   document.getElementById("searchresult").innerHTML = response;
+    
+      	});
+     };
     </script>
   </body>
 </html>
