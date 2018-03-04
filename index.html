@@ -65,9 +65,10 @@ function search() {
   
   apiQuery("https://rolfmadsen.cloud.tyk.io/opensearch/5.0/?action=search&query=" + "%22" + query + "%22" + "&agency=100200&profile=test&start=1&stepValue=5&outputType=json", function(data) {
     var hitCount = data.searchResponse.result.hitCount.$;
-    var title = data.searchResponse.result.searchResult[0].collection.object[0].record.title[0].$;
-    var creator = data.searchResponse.result.searchResult[0].collection.object[0].record.creator[0].$;
-    var date = data.searchResponse.result.searchResult[0].collection.object[0].record.date[0].$;
+    var title = data..searchResponse.result.searchResult["0"].collection.object["0"].record.title["0"].$;
+    var creator = data.searchResponse.result.searchResult[0].collection.object["0"].record.creator["0"].$;
+    var date = data.searchResponse.result.searchResult["0"].collection.object["0"].record.date["0"].$;
+    
     var response = "<p>" + "Antal resultater: " + hitCount + "</p>" + "<p>" + title + " (" + date + ")" + "</br>" + "<span>" + "By: " + creator + "</span>" + "</p>";
     
    document.getElementById("searchresult").innerHTML = response;
